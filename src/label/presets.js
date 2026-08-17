@@ -26,13 +26,13 @@ import {
  *   k.display / k.body   CSS font stacks
  *   k.v(key)   trimmed value of a copy field
  *   k.logo     HTMLImageElement or null
+ *   k.front    share of the wrap that reads as the front panel — a square
+ *              bottle shows far less of the label head-on than a cylinder, so
+ *              artwork is sized against this rather than a fixed fraction
  *
  * The front of the bottle sits at the centre of the canvas (x = W/2); x = 0 and
  * x = W are the same point on the back seam.
  */
-
-// Only ~40% of the wrap is readable head-on, so front artwork stays inside this.
-const FRONT = 0.44
 
 const upper = (s) => String(s || '').toUpperCase()
 
@@ -94,9 +94,9 @@ export const PRESETS = [
       { name: 'Navy & Gold', bg: '#1c2b45', fg: '#f2ecdf', accent: '#cba95d', cap: '#c8a24a' },
     ],
     render(c, k) {
-      const { W, H, px, colors, display, body, v, logo } = k
+      const { W, H, px, colors, display, body, v, logo, front } = k
       const cx = W / 2
-      const maxW = W * FRONT
+      const maxW = W * front
 
       c.fillStyle = colors.bg
       c.fillRect(0, 0, W, H)
@@ -191,9 +191,9 @@ export const PRESETS = [
       { name: 'Lavender', bg: '#f1eef7', fg: '#443a5c', accent: '#8878ab', cap: '#a294c7' },
     ],
     render(c, k) {
-      const { W, H, px, colors, display, body, v, logo } = k
+      const { W, H, px, colors, display, body, v, logo, front } = k
       const cx = W / 2
-      const maxW = W * FRONT
+      const maxW = W * front
 
       c.fillStyle = colors.bg
       c.fillRect(0, 0, W, H)
@@ -283,9 +283,9 @@ export const PRESETS = [
       { name: 'Clean White', bg: '#f5f5f3', fg: '#1d1d1b', accent: '#e0533d', cap: '#1d1d1b' },
     ],
     render(c, k) {
-      const { W, H, px, colors, display, body, v, logo } = k
+      const { W, H, px, colors, display, body, v, logo, front } = k
       const cx = W / 2
-      const maxW = W * FRONT
+      const maxW = W * front
 
       c.fillStyle = colors.bg
       c.fillRect(0, 0, W, H)
@@ -357,9 +357,9 @@ export const PRESETS = [
       { name: 'Forest', bg: '#132a22', fg: '#eaf1e9', accent: '#c2a565', cap: '#c8a24a' },
     ],
     render(c, k) {
-      const { W, H, px, colors, display, body, v, logo } = k
+      const { W, H, px, colors, display, body, v, logo, front } = k
       const cx = W / 2
-      const maxW = W * FRONT
+      const maxW = W * front
 
       c.fillStyle = colors.bg
       c.fillRect(0, 0, W, H)
@@ -452,9 +452,9 @@ export const PRESETS = [
       { name: 'Ink', bg: '#101418', fg: '#f2f5f7', accent: '#4fb2e5', cap: '#1f6fd0' },
     ],
     render(c, k) {
-      const { W, H, px, colors, display, body, v, logo } = k
+      const { W, H, px, colors, display, body, v, logo, front } = k
       const cx = W / 2
-      const maxW = W * FRONT
+      const maxW = W * front
 
       c.fillStyle = colors.bg
       c.fillRect(0, 0, W, H)
@@ -524,9 +524,9 @@ export const PRESETS = [
       { name: 'Mint Pop', bg: '#8fe3c2', fg: '#0f3a2c', accent: '#ef6f6c', cap: '#ef6f6c' },
     ],
     render(c, k) {
-      const { W, H, px, colors, display, body, v, logo } = k
+      const { W, H, px, colors, display, body, v, logo, front } = k
       const cx = W / 2
-      const maxW = W * FRONT
+      const maxW = W * front
 
       c.fillStyle = colors.bg
       c.fillRect(0, 0, W, H)

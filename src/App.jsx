@@ -3,6 +3,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import Viewer from './components/Viewer'
 import Panel from './components/Panel'
 import { presetById } from './label/presets'
+import { shapeById } from './three/shapes'
 
 const FIRST = presetById('wedding-classic')
 const paletteColors = (p) => ({ bg: p.bg, fg: p.fg, accent: p.accent })
@@ -14,6 +15,7 @@ export default function App() {
   const [colors, setColors] = useState(() => paletteColors(FIRST.palettes[0]))
   const [fonts, setFonts] = useState(() => ({ ...FIRST.fonts }))
   const [capColor, setCapColor] = useState(FIRST.palettes[0].cap)
+  const [shapeId, setShapeId] = useState('classic')
   const [sizeId, setSizeId] = useState('500')
   const [finish, setFinish] = useState('matte')
   const [logo, setLogo] = useState(null)
@@ -90,8 +92,8 @@ export default function App() {
   )
 
   const design = useMemo(
-    () => ({ sizeId, presetId, values, colors, fonts, logo, capColor, finish }),
-    [sizeId, presetId, values, colors, fonts, logo, capColor, finish],
+    () => ({ shapeId, sizeId, presetId, values, colors, fonts, logo, capColor, finish }),
+    [shapeId, sizeId, presetId, values, colors, fonts, logo, capColor, finish],
   )
 
   return (
@@ -115,7 +117,8 @@ export default function App() {
           <div className="stage-caption">
             <b>{preset.name}</b>
             <span>
-              {preset.tagline} · {sizeId === '1000' ? '1 litre' : `${sizeId} ml`}
+              {shapeById(shapeId).name} · {sizeId === '1000' ? '1 litre' : `${sizeId} ml`} ·{' '}
+              {preset.tagline}
             </span>
           </div>
           <div className="stage-hint">Drag to rotate · scroll to zoom</div>
@@ -128,6 +131,8 @@ export default function App() {
             </p>
           )}
           <Panel
+            shapeId={shapeId}
+            onShape={setShapeId}
             preset={preset}
             onPreset={choosePreset}
             values={values}

@@ -15,16 +15,16 @@ import { renderLabel } from '../label/renderLabel'
 import { ensureFonts } from '../config/fonts'
 
 export default function Bottle({ design }) {
-  const { sizeId, presetId, values, colors, fonts, logo, capColor, finish } = design
+  const { shapeId, sizeId, presetId, values, colors, fonts, logo, capColor, finish } = design
   const gl = useThree((s) => s.gl)
 
-  const metrics = useMemo(() => bottleMetrics(sizeId), [sizeId])
+  const metrics = useMemo(() => bottleMetrics(shapeId, sizeId), [shapeId, sizeId])
 
-  const shellGeo = useDisposable(() => bottleGeometry(sizeId), [sizeId])
-  const waterGeo = useDisposable(() => waterGeometry(sizeId), [sizeId])
-  const labelGeo = useDisposable(() => labelGeometry(sizeId), [sizeId])
-  const capGeo = useDisposable(() => capGeometry(sizeId), [sizeId])
-  const ringGeo = useDisposable(() => tamperRingGeometry(sizeId), [sizeId])
+  const shellGeo = useDisposable(() => bottleGeometry(shapeId, sizeId), [shapeId, sizeId])
+  const waterGeo = useDisposable(() => waterGeometry(shapeId, sizeId), [shapeId, sizeId])
+  const labelGeo = useDisposable(() => labelGeometry(shapeId, sizeId), [shapeId, sizeId])
+  const capGeo = useDisposable(() => capGeometry(shapeId, sizeId), [shapeId, sizeId])
+  const ringGeo = useDisposable(() => tamperRingGeometry(shapeId, sizeId), [shapeId, sizeId])
 
   // ── label texture ────────────────────────────────────────────────────────
   const canvas = useMemo(() => document.createElement('canvas'), [])
@@ -47,6 +47,7 @@ export default function Bottle({ design }) {
         fonts,
         logo,
         aspect: metrics.labelAspect,
+        front: metrics.front,
       })
       texture.needsUpdate = true
     }
@@ -57,7 +58,7 @@ export default function Bottle({ design }) {
     return () => {
       alive = false
     }
-  }, [canvas, texture, presetId, values, colors, fonts, logo, metrics.labelAspect])
+  }, [canvas, texture, presetId, values, colors, fonts, logo, metrics.labelAspect, metrics.front])
 
   const glossy = finish === 'glossy'
 

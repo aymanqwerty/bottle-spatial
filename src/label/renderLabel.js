@@ -6,11 +6,12 @@ const TEXTURE_WIDTH = 2400
 /**
  * Paints the full wrap-around artwork into `canvas`.
  *
- * `aspect` is the real circumference / band-height ratio of the bottle the label
- * is going onto — matching the canvas to it is what stops the artwork from
- * looking stretched once it is wrapped around the mesh.
+ * `aspect` is the real perimeter / band-height ratio of the bottle the label is
+ * going onto — matching the canvas to it is what stops the artwork from looking
+ * stretched once it is wrapped around the mesh. `front` is the share of that
+ * wrap the customer actually sees head-on.
  */
-export function renderLabel(canvas, { presetId, values, colors, fonts, logo, aspect }) {
+export function renderLabel(canvas, { presetId, values, colors, fonts, logo, aspect, front }) {
   const preset = presetById(presetId)
   const W = TEXTURE_WIDTH
   const H = Math.max(320, Math.round(W / aspect))
@@ -35,6 +36,7 @@ export function renderLabel(canvas, { presetId, values, colors, fonts, logo, asp
     display: fontById(fonts.display).stack,
     body: fontById(fonts.body).stack,
     logo,
+    front: front ?? 0.44,
     v: (key) => String(values[key] ?? '').trim(),
   }
 

@@ -1,7 +1,7 @@
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { PRESETS } from '../label/presets'
 import { FONTS } from '../config/fonts'
-import { SIZE_LIST } from '../three/bottle'
+import { SHAPE_LIST, SIZE_LIST, shapePreview } from '../three/bottle'
 
 const FONT_GROUPS = ['Script', 'Serif', 'Sans', 'Display']
 
@@ -15,6 +15,25 @@ function Section({ num, title, hint, children }) {
       {hint && <p className="sec-hint">{hint}</p>}
       {children}
     </section>
+  )
+}
+
+/** Shape card art is traced from the same silhouette the 3D viewer sweeps. */
+function ShapeCard({ shape, active, onClick }) {
+  const art = useMemo(() => shapePreview(shape.id), [shape.id])
+  return (
+    <button type="button" className={active ? 'shape-card on' : 'shape-card'} onClick={onClick}>
+      <svg className="shape-art" viewBox="0 0 34 58" aria-hidden="true">
+        <path d={art.silhouette} />
+      </svg>
+      <span className="shape-meta">
+        <b>{shape.name}</b>
+        <small>{shape.note}</small>
+      </span>
+      <svg className="shape-section" viewBox="0 0 22 22" aria-hidden="true">
+        <path d={art.section} />
+      </svg>
+    </button>
   )
 }
 
@@ -70,6 +89,8 @@ function FontSelect({ label, value, onChange }) {
 }
 
 export default function Panel({
+  shapeId,
+  onShape,
   preset,
   onPreset,
   values,
@@ -96,7 +117,20 @@ export default function Panel({
 
   return (
     <div className="panel-inner">
-      <Section num="01" title="Style" hint="Pick a starting design — everything below stays editable.">
+      <Section num="01" title="Bottle shape" hint="The small outline on the right is the top-down cross-section.">
+        <div className="shape-grid">
+          {SHAPE_LIST.map((s) => (
+            <ShapeCard
+              key={s.id}
+              shape={s}
+              active={s.id === shapeId}
+              onClick={() => onShape(s.id)}
+            />
+          ))}
+        </div>
+      </Section>
+
+      <Section num="02" title="Style" hint="Pick a starting design — everything below stays editable.">
         <div className="style-grid">
           {PRESETS.map((p) => {
             const pal = p.palettes[0]
@@ -121,7 +155,7 @@ export default function Panel({
         </div>
       </Section>
 
-      <Section num="02" title="Your text" hint="Leave a field empty to drop that line from the label.">
+      <Section num="03" title="Your text" hint="Leave a field empty to drop that line from the label.">
         {preset.fields.map((f) => (
           <label className="field" key={f.key}>
             <span className="field-label">
@@ -141,7 +175,7 @@ export default function Panel({
         ))}
       </Section>
 
-      <Section num="03" title="Colours">
+      <Section num="04" title="Colours">
         <div className="palette-row">
           {preset.palettes.map((p) => {
             const active =
@@ -172,14 +206,14 @@ export default function Panel({
         </div>
       </Section>
 
-      <Section num="04" title="Typography">
+      <Section num="05" title="Typography">
         <div className="two-up">
           <FontSelect label="Headline font" value={fonts.display} onChange={(v) => onFonts({ ...fonts, display: v })} />
           <FontSelect label="Supporting font" value={fonts.body} onChange={(v) => onFonts({ ...fonts, body: v })} />
         </div>
       </Section>
 
-      <Section num="05" title="Logo" hint={preset.logoHint}>
+      <Section num="06" title="Logo" hint={preset.logoHint}>
         <div className="logo-row">
           <div className="logo-thumb" data-empty={logo ? 'no' : 'yes'}>
             {logo ? <img src={logo.src} alt="Uploaded logo preview" /> : <span>No logo</span>}
@@ -208,7 +242,7 @@ export default function Panel({
         </div>
       </Section>
 
-      <Section num="06" title="Bottle">
+      <Section num="07" title="Size & finish">
         <span className="field-label plain">Size</span>
         <Segmented
           name="Bottle size"
@@ -228,7 +262,7 @@ export default function Panel({
         />
       </Section>
 
-      <Section num="07" title="View">
+      <Section num="08" title="View">
         <div className="view-row">
           <label className="switch">
             <input type="checkbox" checked={autoRotate} onChange={(e) => onAutoRotate(e.target.checked)} />

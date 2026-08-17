@@ -207,6 +207,79 @@ body {
   margin-top: 14px;
 }
 
+/* ── shape cards ──────────────────────────────────────────────────────── */
+.shape-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.shape-card {
+  display: grid;
+  grid-template-columns: 34px 1fr 22px;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel-2);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s, transform 0.12s;
+}
+
+.shape-card:hover {
+  border-color: #3d4c5c;
+  transform: translateY(-1px);
+}
+
+.shape-card.on {
+  border-color: var(--accent);
+  background: #12242f;
+  box-shadow: inset 0 0 0 1px rgba(79, 184, 232, 0.35);
+}
+
+.shape-art {
+  width: 34px;
+  height: 58px;
+  fill: #55697c;
+  transition: fill 0.15s;
+}
+
+.shape-card.on .shape-art {
+  fill: var(--accent);
+}
+
+.shape-section {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: #55697c;
+  stroke-width: 1.6;
+  transition: stroke 0.15s;
+}
+
+.shape-card.on .shape-section {
+  stroke: var(--accent);
+}
+
+.shape-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.shape-meta b {
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.shape-meta small {
+  font-size: 10px;
+  color: var(--muted);
+}
+
 /* ── style cards ──────────────────────────────────────────────────────── */
 .style-grid {
   display: grid;
